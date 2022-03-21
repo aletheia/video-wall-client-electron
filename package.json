@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "start": "electron-forge start",
+    "kiosk": "export RUN_MODE=kiosk && electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",

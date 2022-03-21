@@ -17,11 +17,17 @@ const createWindow = (): void => {
     width: 800,
   });
 
+  if (process.env.RUN_MODE && process.env.RUN_MODE === 'kiosk') {
+    mainWindow.setFullScreen(true);
+  }
+
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools();
+if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {    
+    mainWindow.webContents.openDevTools();
+  }  
 };
 
 // This method will be called when Electron has finished
