@@ -1,8 +1,8 @@
 {
-  "name": "video-wall-react-client",
-  "productName": "video-wall-react-client",
+  "name": "video-wall-client-electron",
+  "productName": "VideoWall Client",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "An Electron app to display video from AWS IoT topic",
   "main": "dist/main",
   "scripts": {
     "clean": "rimraf dist",
