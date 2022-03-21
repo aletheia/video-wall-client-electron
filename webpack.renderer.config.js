@@ -16,9 +16,5 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
   },
-  output: {
-    filename: 'renderer.js',
-    path: join(__dirname, 'dist'),
-  },
 
 };
