@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { join } = require('path');
 const rules = require('./webpack.rules');
 const plugins = require('./webpack.plugins');
 
@@ -14,4 +16,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
   },
+  output: {
+    filename: 'renderer.js',
+    path: join(__dirname, 'dist'),
+  },
+
 };

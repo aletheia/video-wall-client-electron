@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { join } = require('path');
+
 module.exports = {
   /**
    * This is the main entry point for your application, it's the first file
@@ -10,5 +13,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
+  },
+  output: {
+    filename: 'main.js',
+    path: join(__dirname, 'dist'),
   },
 };
