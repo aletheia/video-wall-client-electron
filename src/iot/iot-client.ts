@@ -2,28 +2,39 @@ import {mqtt, iot, io} from 'aws-iot-device-sdk-v2';
 import {TextDecoder} from 'util';
 import {
   EventNotificationManager,
-  MESSAGE_RECEIVED_EVENT_TYPE,
+  EVENTS_MESSAGE_RECEIVED,
 } from '../util/notifier';
 import {Logger} from '../util/logger';
 import {IoTConfiguration} from './iot-configuration';
 import {existsSync} from 'fs';
 import {resolve} from 'path';
-
-export const updateTopic = '/ctrlaltmuseum';
+import {Config} from '../util/config';
 
 export class IoTClient {
   private configuration: mqtt.MqttConnectionConfig;
   private connection?: mqtt.MqttClientConnection;
 
   constructor(
-    protected config: IoTConfiguration,
+    protected config: Config,
     protected notificationManager: EventNotificationManager,
     protected logger: Logger
   ) {
     this.logger = logger;
     this.config = config;
     this.notificationManager = notificationManager;
-    this.configuration = this.buildConfiguration(config);
+
+    const iotConfiguration = {
+      region: config.region,
+      clientId: config.clientId,
+      endpoint: config.iotEndpoint,
+      certificates: {
+        certificatePath: config.certificates.certificatePath,
+        privateKeyPath: config.certificates.privateKeyPath,
+        rootCertificatePath: config.certificates.rootCertificatePath,
+      },
+    };
+
+    this.configuration = this.buildConfiguration(iotConfiguration);
     this.onMessageReceived = this.onMessageReceived.bind(this);
   }
 
@@ -31,11 +42,11 @@ export class IoTClient {
     this.validateConfiguration(configuration);
     const builder =
       iot.AwsIotMqttConnectionConfigBuilder.new_mtls_builder_from_path(
-        resolve(__dirname, configuration.certificates.certificatePath),
-        resolve(__dirname, configuration.certificates.privateKeyPath)
+        resolve(configuration.certificates.certificatePath),
+        resolve(configuration.certificates.privateKeyPath)
       );
     builder.with_certificate_authority_from_path(
-      resolve(__dirname, configuration.certificates.rootCertificatePath)
+      resolve(configuration.certificates.rootCertificatePath)
     );
     builder.with_clean_session(false);
     builder.with_client_id(configuration.clientId);
@@ -92,6 +103,7 @@ export class IoTClient {
     if (!this.connection) {
       this.connection = await this.connect();
     }
+    const updateTopic = this.config.iotTopicInbound;
     const request = await this.connection.subscribe(
       updateTopic,
       mqtt.QoS.AtLeastOnce,
@@ -109,7 +121,7 @@ export class IoTClient {
       const decoder = new TextDecoder();
       const json = decoder.decode(payload);
       const message = JSON.parse(json);
-      this.notificationManager.notify(message, MESSAGE_RECEIVED_EVENT_TYPE);
+      this.notificationManager.notify(message, EVENTS_MESSAGE_RECEIVED);
     } catch (e) {
       this.logger.error('Error parsing message: ' + e);
       throw e;

@@ -1,8 +1,8 @@
 import {nanoid} from 'nanoid';
 import {Logger} from '../logger';
-import {ALL_EVENTS_SUBSCRIPTION} from './constants';
+import {EVENTS_ALL} from './constants';
 import {Json, Event} from './index';
-import {EventListener} from './EventListener';
+import {EventListener} from './event-listener';
 
 export class EventNotificationManager {
   protected listeners: {[evtName: string]: EventListener[]};
@@ -10,7 +10,7 @@ export class EventNotificationManager {
   constructor(protected logger: Logger) {
     this.logger = logger;
     this.listeners = {};
-    this.listeners[ALL_EVENTS_SUBSCRIPTION] = [];
+    this.listeners[EVENTS_ALL] = [];
   }
 
   addListener(listener: EventListener, eventType?: string) {
@@ -18,7 +18,7 @@ export class EventNotificationManager {
       this.listeners[eventType] = this.listeners[eventType] || [];
       this.listeners[eventType].push(listener);
     } else {
-      this.listeners[ALL_EVENTS_SUBSCRIPTION].push(listener);
+      this.listeners[EVENTS_ALL].push(listener);
     }
   }
   removeListener(listener: EventListener) {
@@ -45,7 +45,7 @@ export class EventNotificationManager {
       eventType && this.listeners[eventType] ? this.listeners[eventType] : [];
 
     const listeners = typeSpecificEventListeners.concat(
-      this.listeners[ALL_EVENTS_SUBSCRIPTION]
+      this.listeners[EVENTS_ALL]
     );
     console.log(listeners);
     listeners.forEach((listener: EventListener) => {

@@ -8,6 +8,6 @@ export interface Event {
   payload: Json;
 }
 
-export * from './EventListener';
-export * from './EventNotificationManager';
+export * from './event-listener';
+export * from './event-notification-manager';
 export * from './constants';
