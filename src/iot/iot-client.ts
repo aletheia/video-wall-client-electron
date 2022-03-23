@@ -1,11 +1,13 @@
 import {mqtt, iot, io} from 'aws-iot-device-sdk-v2';
 import {TextDecoder} from 'util';
-import {EventNotificationManager} from '../util/notifier';
+import {
+  EventNotificationManager,
+  MESSAGE_RECEIVED_EVENT_TYPE,
+} from '../util/notifier';
 import {Logger} from '../util/logger';
 import {IoTConfiguration} from './iot-configuration';
 import {existsSync} from 'fs';
 import {resolve} from 'path';
-import {MESSAGE_RECEIVED_EVENT_TYPE} from '../util/notifier/';
 
 export const updateTopic = '/ctrlaltmuseum';
 

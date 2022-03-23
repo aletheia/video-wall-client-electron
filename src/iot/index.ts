@@ -1,8 +1,7 @@
 export * from './iot-client';
 
 import {Logger} from '../util/logger';
-import {Event, EventNotificationManager} from '../util/notifier';
-import {EventListener} from '../util/notifier';
+import {Event, EventNotificationManager, EventListener} from '../util/notifier';
 import {IoTConfiguration} from './iot-configuration';
 import {IoTClient} from './iot-client';
 
