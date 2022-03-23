@@ -47,9 +47,7 @@ export class EventNotificationManager {
     const listeners = typeSpecificEventListeners.concat(
       this.listeners[EVENTS_ALL]
     );
-    console.log(listeners);
     listeners.forEach((listener: EventListener) => {
-      console.log(JSON.stringify(event) + ' ' + eventType);
       listener.onEvent(event);
     });
   }
